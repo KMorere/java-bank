@@ -32,4 +32,9 @@ public class Person {
 
         return this.getAccount();
     }
+
+    @Override
+    public String toString() {
+        return getFullName();
+    }
 }

@@ -20,10 +20,39 @@ public class Account {
     public Person getHolder() { return this.holder; }
     private void setHolder(Person _holder) { this.holder = _holder; }
 
-    public void transferMoney(Account _account, float _amount) {
+    public boolean transferMoney(Account _account, float _amount) {
         if (_amount < 0)
             throw new RuntimeException("The amount to transfer must be positive !");
+        float startbalance = this.getAccountBalance();
+        float destbalance = _account.getAccountBalance();
+
         _account.setAccountBalance(_amount);
         this.setAccountBalance(-_amount);
+
+        return (this.getAccountBalance() == startbalance - _amount &&
+                _account.getAccountBalance() == destbalance + _amount);
+    }
+
+    public boolean depositMoney(float _amount) {
+        if (_amount < 0)
+            throw new RuntimeException("The amount to transfer must be positive !");
+        this.setAccountBalance(_amount);
+
+        return true;
+    }
+
+    public boolean takeoutMoney(float _amount) {
+        if (_amount < 0)
+            throw new RuntimeException("The amount to transfer must be positive !");
+        this.setAccountBalance(-_amount);
+
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return ("Account : " + this.getAccountNumber() + " :\n"+
+                "\t- Holder : " + this.getHolder() + ",\n"+
+                "\t- Balance : " + this.getAccountBalance() + "\n");
     }
 }
