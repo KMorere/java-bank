@@ -1,3 +1,5 @@
+import java.util.logging.Logger;
+
 /**
  * The account of a Person with a unique number and a balance.
  */
@@ -5,6 +7,8 @@ public class Account {
     private String accountNumber; // Account number in 'FR-XXXX-XXXX' format.
     private float balance;
     private Person holder;
+
+    private static final Logger logger = CustomLogger.getInstance(Logger.getLogger(Account.class.getName())).logger;
 
     public Account(String _number, Person _holder) {
         this.setAccountNumber(_number);
@@ -29,6 +33,9 @@ public class Account {
         _account.setAccountBalance(_amount);
         this.setAccountBalance(-_amount);
 
+        String msg = String.format("Successfully transfered %s to %s.", _amount, _account.getHolder());
+        logger.info(msg);
+
         return (this.getAccountBalance() == startbalance - _amount &&
                 _account.getAccountBalance() == destbalance + _amount);
     }
@@ -38,6 +45,9 @@ public class Account {
             throw new RuntimeException("The amount to transfer must be positive !");
         this.setAccountBalance(_amount);
 
+        String msg = String.format("Successfully deposited %s to the account.", _amount);
+        logger.info(msg);
+
         return true;
     }
 
@@ -45,6 +55,9 @@ public class Account {
         if (_amount < 0)
             throw new RuntimeException("The amount to transfer must be positive !");
         this.setAccountBalance(-_amount);
+
+        String msg = String.format("Successfully took out %s from the account.", _amount);
+        logger.info(msg);
 
         return true;
     }
