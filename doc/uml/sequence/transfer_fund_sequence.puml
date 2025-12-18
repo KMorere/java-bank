@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+== Login ==
+
+User -> Bank : Login request
+activate User
+activate Bank
+
+Bank -> Database : Validate credentials
+activate Database
+Database --> Bank : Confirm credentials
+deactivate Database
+Bank --> User : Login confirmation
+deactivate Bank
+
+== Transfer fund ==
+
+User -> Bank : Transfer funds to another account
+activate Bank
+Bank -> Database : Validate credentials
+activate Database
+Database --> Bank : Update account balance
+deactivate Database
+
+Bank --> User : Send transfer confirmation
+deactivate Bank
+
+@enduml

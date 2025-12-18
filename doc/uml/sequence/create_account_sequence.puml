@@ -1,0 +1,23 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+== Create account ==
+
+User -> Bank : Send account creation application
+activate User
+activate Bank
+
+alt#gold #lightblue Accept application
+    Bank -> Bank : Generate unique account number
+    Bank -> Database : Save the account information
+    activate Database
+    Database --> Bank : Confirmation message
+    deactivate Database
+
+    Bank --> User : Confirmation message
+    deactivate Bank
+end alt
+
+@enduml
