@@ -24,6 +24,12 @@ public class Account {
     public Person getHolder() { return this.holder; }
     private void setHolder(Person _holder) { this.holder = _holder; }
 
+    /**
+     * Transfer '_amount' from this account to another.
+     * @param _account The account receiving the transfer.
+     * @param _amount The amount of funds to transfer.
+     * @return Return true if the action was successful.
+     */
     public boolean transferMoney(Account _account, float _amount) {
         if (_amount < 0)
             throw new RuntimeException("The amount to transfer must be positive !");
@@ -40,6 +46,11 @@ public class Account {
                 _account.getAccountBalance() == destbalance + _amount);
     }
 
+    /**
+     * Deposit '_amount' to this account.
+     * @param _amount The amount of funds to add.
+     * @return Return true if the action was successful.
+     */
     public boolean depositMoney(float _amount) {
         if (_amount < 0)
             throw new RuntimeException("The amount to transfer must be positive !");
@@ -51,7 +62,12 @@ public class Account {
         return true;
     }
 
-    public boolean takeoutMoney(float _amount) {
+    /**
+     * Withdraw '_amount' from this account.
+     * @param _amount The amount of funds to withdraw.
+     * @return Return true if the action was successful.
+     */
+    public boolean withdrawMoney(float _amount) {
         if (_amount < 0)
             throw new RuntimeException("The amount to transfer must be positive !");
         this.setAccountBalance(-_amount);

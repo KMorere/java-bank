@@ -22,15 +22,21 @@ public class Person {
             return null;
     }
 
-    public Account createAccount(String _number) throws RuntimeException {
-        if (getAccount() == null) {
+    /**
+     * Initial account creation application, validated to the bank.
+     * @param _number The account number of the account to create.
+     * @return Return 'accountNumber' of the newly created account.
+     * @throws RuntimeException Throws an Exception if the account already exists.
+     */
+    public String createAccount(String _number) throws RuntimeException {
+        if (getAccount() == null) { // TODO: Have the account creation done in a Bank class.
             this.account = new Account(_number, this);
         }
         else {
             throw new RuntimeException("An account already exists for " + this.getFullName() + ".");
         }
 
-        return this.getAccount();
+        return _number;
     }
 
     @Override

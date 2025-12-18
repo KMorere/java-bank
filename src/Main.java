@@ -16,7 +16,7 @@ public class Main {
 
         acc1.depositMoney(250);
         acc1.transferMoney(acc2, 100);
-        acc2.takeoutMoney(50);
+        acc2.withdrawMoney(50);
 
         System.out.println(acc1 + "\n" + acc2);
     }
