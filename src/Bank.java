@@ -1,11 +1,14 @@
 import custom.*;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Bank {
     private String name;
 
     private static final String ACCOUNT_NUMBER_FORMAT = "FR-XXXX-XXXX";
     private static final Random rnd = new Random();
+    private static final String regex = "";
 
     public Bank(String _name) {
         this.setName(_name);
@@ -46,6 +49,22 @@ public class Bank {
         }
 
         return newNumber.toString();
+    }
+
+    public static String getAccount(String _accountNumber) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(_accountNumber);
+
+        if (matcher.find()) {
+            // TODO: Get the account.
+            System.out.println("Account exists");
+            return _accountNumber;
+        }
+        else {
+            System.out.println("Account does not exist");
+        }
+
+        return null;
     }
 
     @Override
