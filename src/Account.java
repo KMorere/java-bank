@@ -1,3 +1,4 @@
+import custom.*;
 import java.util.logging.Logger;
 
 /**
@@ -29,10 +30,17 @@ public class Account {
      * @param _account The account receiving the transfer.
      * @param _amount The amount of funds to transfer.
      * @return Return true if the action was successful.
+     * @throws InsufficientBalanceException Throws exception if the balance of the account is too low.
+     * @throws AccountDoesNotExistException Throws exception if _account does not exist.
      */
-    public boolean transferMoney(Account _account, float _amount) {
+    public boolean transferMoney(Account _account, float _amount)
+            throws InsufficientBalanceException, AccountDoesNotExistException {
         if (_amount < 0)
             throw new RuntimeException("The amount to transfer must be positive !");
+        if (this.balance < _amount)
+            throw new InsufficientBalanceException();
+        if (_account == null)
+            throw new AccountDoesNotExistException();
         float startbalance = this.getAccountBalance();
         float destbalance = _account.getAccountBalance();
 
@@ -66,10 +74,13 @@ public class Account {
      * Withdraw '_amount' from this account.
      * @param _amount The amount of funds to withdraw.
      * @return Return true if the action was successful.
+     * @throws InsufficientBalanceException Throws exception if the balance of the account is too low.
      */
-    public boolean withdrawMoney(float _amount) {
+    public boolean withdrawMoney(float _amount) throws InsufficientBalanceException {
         if (_amount < 0)
             throw new RuntimeException("The amount to transfer must be positive !");
+        if (this.balance < _amount)
+            throw new InsufficientBalanceException();
         this.setAccountBalance(-_amount);
 
         String msg = String.format("Successfully took out %s from the account.", _amount);
