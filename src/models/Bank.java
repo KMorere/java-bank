@@ -1,3 +1,5 @@
+package models;
+
 import custom.*;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -62,11 +64,11 @@ public class Bank {
 
         if (matcher.find()) {
             // TODO: Get the account.
-            System.out.println("Account exists");
+            System.out.println("models.Account exists");
             return _accountNumber;
         }
         else {
-            System.out.println("Account does not exist");
+            System.out.println("models.Account does not exist");
         }
 
         return null;
@@ -74,6 +76,6 @@ public class Bank {
 
     @Override
     public String toString() {
-        return "Bank : " + getName();
+        return "models.Bank : " + getName();
     }
 }

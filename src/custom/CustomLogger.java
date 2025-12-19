@@ -1,3 +1,5 @@
+package custom;
+
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;

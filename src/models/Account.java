@@ -1,11 +1,13 @@
+package models;
+
 import custom.*;
 import java.util.logging.Logger;
 
 /**
- * The account of a Person with a unique number and a balance.
+ * The account of a models.Person with a unique number and a balance.
  */
 public class Account {
-    private String accountNumber; // Account number in 'FR-XXXX-XXXX' format.
+    private String accountNumber; // models.Account number in 'FR-XXXX-XXXX' format.
     private float balance;
     private Person holder;
 
@@ -91,7 +93,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return ("Account : " + this.getAccountNumber() + " :\n"+
+        return ("models.Account : " + this.getAccountNumber() + " :\n"+
                 "\t- Holder : " + this.getHolder() + ",\n"+
                 "\t- Balance : " + this.getAccountBalance() + "\n");
     }
