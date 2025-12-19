@@ -8,7 +8,7 @@ public class Bank {
 
     private static final String ACCOUNT_NUMBER_FORMAT = "FR-XXXX-XXXX";
     private static final Random rnd = new Random();
-    private static final String regex = "";
+    private static final String REGEX = "[A-Z]{2}-\\d{4}-\\d{4}";
 
     public Bank(String _name) {
         this.setName(_name);
@@ -51,8 +51,13 @@ public class Bank {
         return newNumber.toString();
     }
 
+    /**
+     * Get the account from an account number.
+     * @param _accountNumber The account number used.
+     * @return Returns the account.
+     */
     public static String getAccount(String _accountNumber) {
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern = Pattern.compile(REGEX);
         Matcher matcher = pattern.matcher(_accountNumber);
 
         if (matcher.find()) {

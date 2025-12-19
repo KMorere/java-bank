@@ -1,16 +1,29 @@
+import custom.AccountAlreadyExistsException;
+
 import java.util.logging.Logger;
+import java.awt.Color;
 
 public class Main {
     public static void main(String[] args) {
         Logger logger = CustomLogger.getInstance(Logger.getLogger(Main.class.getName())).logger;
+
+        Bank newBank = new Bank("Banque impopulaire");
 
         logger.info("Creating Person 1 and 2...");
         Person npc1 = new Person("Jackie", "Chène");
         Person npc2 = new Person("Jacques", "Ièsse");
 
         logger.info("Creating Account for person 1 and 2.");
-        Account acc1 = new Account("FR-0123-3210", npc1);
-        Account acc2 = new Account("FR-4567-7654", npc2);
+        try {
+            newBank.createAccount(npc1);
+            newBank.createAccount(npc2);
+        } catch (AccountAlreadyExistsException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+
+        Account acc1 = npc1.getAccount();
+        Account acc2 = npc2.getAccount();
 
         System.out.println(acc1 + "\n" + acc2);
 
@@ -20,7 +33,6 @@ public class Main {
 
         System.out.println(acc1 + "\n" + acc2);
 
-        Bank newBank = new Bank("Banque impopulaire");
         System.out.println(newBank.generateAccountNumber());
     }
 }
