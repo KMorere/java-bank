@@ -11,16 +11,8 @@ public class Person {
     public String getFirstName() { return this.firstName; }
     public String getLastName() { return this.lastName; }
     public String getFullName() { return this.getFirstName() + " " + this.getLastName(); }
-
-    /**
-     * Return the account of a Person, otherwise return null.
-     */
-    public Account getAccount() {
-        if (this.account != null)
-            return account;
-        else
-            return null;
-    }
+    public Account getAccount() { return account; }
+    public void setAccount(Account _account) { this.account = _account; }
 
     /**
      * Initial account creation application, validated to the bank.
@@ -29,7 +21,7 @@ public class Person {
      * @throws RuntimeException Throws an Exception if the account already exists.
      */
     public String createAccount(String _number) throws RuntimeException {
-        if (getAccount() == null) { // TODO: Have the account creation done in a Bank class.
+        if (getAccount() == null) {
             this.account = new Account(_number, this);
         }
         else {

@@ -19,5 +19,8 @@ public class Main {
         acc2.withdrawMoney(50);
 
         System.out.println(acc1 + "\n" + acc2);
+
+        Bank newBank = new Bank("Banque impopulaire");
+        System.out.println(newBank.generateAccountNumber());
     }
 }
