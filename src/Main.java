@@ -2,11 +2,17 @@ import custom.*;
 import models.Account;
 import models.Bank;
 import models.Person;
+import daos.AccountDao;
 
 import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) {
+        Account accountDao = new AccountDao().read(1);
+        System.out.println(accountDao.displayAccount());
+    }
+
+    private static void test_init() {
         Logger logger = CustomLogger.getInstance(Logger.getLogger(Main.class.getName())).logger;
 
         Bank newBank = new Bank("Banque impopulaire");

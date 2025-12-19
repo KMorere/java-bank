@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public abstract class Dao<T> {
-    private static final String URL = "jdbc:mysql://localhost:3306/bank";
+    private static final String URL = "jdbc:mariadb://localhost:3306/bank?allowMultiQueries=true";
     private static final String LOGIN = "root";
     private static final String PASSWORD = "fms2025";
 
@@ -15,7 +15,8 @@ public abstract class Dao<T> {
      * @return Returns the connection object.
      * @throws SQLException Raise an exception if the connection failed.
      */
-    protected Connection connection() throws SQLException {
+    protected Connection connection() throws SQLException, ClassNotFoundException {
+        Class.forName("org.mariadb.jdbc.Driver");
         return DriverManager.getConnection(URL, LOGIN, PASSWORD);
     }
 
