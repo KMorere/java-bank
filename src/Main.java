@@ -1,9 +1,9 @@
-import custom.AccountAlreadyExistsException;
-import custom.AccountDoesNotExistException;
-import custom.InsufficientBalanceException;
+import custom.*;
+import models.Account;
+import models.Bank;
+import models.Person;
 
 import java.util.logging.Logger;
-import java.awt.Color;
 
 public class Main {
     public static void main(String[] args) {
@@ -11,11 +11,11 @@ public class Main {
 
         Bank newBank = new Bank("Banque impopulaire");
 
-        logger.info("Creating Person 1 and 2...");
+        logger.info("Creating models.Person 1 and 2...");
         Person npc1 = new Person("Jackie", "Chène");
         Person npc2 = new Person("Jacques", "Ièsse");
 
-        logger.info("Creating Account for person 1 and 2.");
+        logger.info("Creating models.Account for person 1 and 2.");
         try {
             newBank.createAccount(npc1);
             newBank.createAccount(npc2);
