@@ -1,9 +1,10 @@
 package database;
 
 public class SqlQuery {
-    private final String selection = "*"; // Par défaut, on prend tout
+    private String selection = "*"; // Par défaut, on prend tout
     private String table;
     private String condition = "";
+    private String join = "";
     private String sort = "";
 
     public static class Builder {
@@ -14,8 +15,18 @@ public class SqlQuery {
             return this;
         }
 
+        public Builder select(String fields) {
+            query.selection = fields;
+            return this;
+        }
+
         public Builder filter(String condition) {
             query.condition = " WHERE " + condition;
+            return this;
+        }
+
+        public Builder join(String table, String id1, String id2) {
+            query.join += " JOIN " + table + " ON " + id1 + " = " + id2;
             return this;
         }
 
@@ -25,7 +36,7 @@ public class SqlQuery {
         }
 
         public String build() {
-            return "SELECT " + query.selection + " FROM " + query.table + query.condition + query.sort + ";";
+            return "SELECT " + query.selection + " FROM " + query.table + query.join + query.condition + query.sort + ";";
         }
     }
 
