@@ -1,6 +1,7 @@
 package daos;
 
 import com.sun.security.ntlm.Client;
+import database.DatabaseConnection;
 import models.*;
 
 import java.sql.*;
@@ -8,10 +9,9 @@ import java.util.Map;
 
 public class AccountDao extends Dao<Account> {
     @Override
-    public int create(Account obj) {
+    public int create(Account obj, String query) {
         int id_account = 0;
-        String query = "INSERT INTO account (id_bank, account_number, account_balance, bank_fk) VALUES (NULL, ?, ?, ?)";
-        try (Connection connection = connection();
+        try (Connection connection = DatabaseConnection.GetInstance().getConnection();
              PreparedStatement record = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             record.setString(1, obj.getAccountNumber());
@@ -22,7 +22,7 @@ public class AccountDao extends Dao<Account> {
 
             if (id_account > 0)
                 System.out.println("Insertion at id : " + id_account);
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -30,17 +30,11 @@ public class AccountDao extends Dao<Account> {
     }
 
     @Override
-    public Account read(int id) {
+    public Account read(int id, String query) {
         Account account = null;
-        String query = "SELECT * FROM account " +
-                "LEFT JOIN account_client ON account.id_account = account_client.id_account " +
-                "LEFT JOIN client ON account_client.id_client = client.id_client " +
-                "LEFT JOIN bank " +
-                "ON account.id_bank = bank.id_bank " +
-                "WHERE account.id_account = ?";
 
-        try (Connection connection = connection();
-        PreparedStatement record = connection.prepareStatement(query)) {
+        try (Connection connection = DatabaseConnection.GetInstance().getConnection();
+             PreparedStatement record = connection.prepareStatement(query)) {
             record.setInt(1, id);
 
             try (ResultSet set = record.executeQuery()) {
@@ -66,7 +60,7 @@ public class AccountDao extends Dao<Account> {
                     }
                 }
             }
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

@@ -1,38 +1,21 @@
 package daos;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Map;
 
 public abstract class Dao<T> {
-    private static final String URL = "jdbc:mariadb://localhost:3306/bank?allowMultiQueries=true";
-    private static final String LOGIN = "root";
-    private static final String PASSWORD = "fms2025";
-
-    /**
-     * Connect to the database.
-     * @return Returns the connection object.
-     * @throws SQLException Raise an exception if the connection failed.
-     */
-    protected Connection connection() throws SQLException, ClassNotFoundException {
-        Class.forName("org.mariadb.jdbc.Driver");
-        return DriverManager.getConnection(URL, LOGIN, PASSWORD);
-    }
-
     /**
      * Insert values into a table.
      * @param obj Entity to create and use in the database.
      * @return The ID of the entity in the table.
      */
-    public abstract int create(T obj);
+    public abstract int create(T obj, String query);
 
     /**
      * Read the entity matching the id.
      * @param id ID of the entity.
      * @return The object matching the id.
      */
-    public abstract T read(int id);
+    public abstract T read(int id, String query);
 
     /**
      * Read all the entities of a table.
