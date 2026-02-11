@@ -28,3 +28,7 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+Bank_looping.lo1
+Bank.iml
+.idea/
