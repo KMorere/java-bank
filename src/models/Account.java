@@ -13,6 +13,7 @@ public class Account {
     private Person holder;
     private Bank bank;
     private int id_bank;
+    private AccountType accountType;
 
     private static final Logger logger = CustomLogger.getInstance(Logger.getLogger(Account.class.getName())).logger;
 
@@ -34,6 +35,7 @@ public class Account {
         this.balance = _balance;
     }
 
+//region Get & Set
     public int getAccountID() { return this.id; }
 
     public String getAccountNumber() { return this.accountNumber; }
@@ -48,6 +50,10 @@ public class Account {
     public Bank getBank() { return this.bank; }
     public int getBankID() { return this.id_bank; }
     public void setBank(Bank _bank) {this.bank = _bank; }
+
+    public AccountType getAccountType() { return this.accountType; }
+    public void setAccountType(AccountType _type) { this.accountType = _type; }
+//endregion
 
     /**
      * Transfer '_amount' from this account to another.
