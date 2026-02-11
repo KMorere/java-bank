@@ -3,12 +3,22 @@ import models.Account;
 import models.Bank;
 import models.Person;
 import daos.AccountDao;
+import database.SqlQuery;
 
 import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) {
-        Account accountDao = new AccountDao().read(1);
+        String sql = new SqlQuery.Builder()
+                .select("*")
+                .table("account")
+                .join("account_client", "account.id_account", "account_client.id_account")
+                .join("client", "account_client.id_client", "client.id_client")
+                .join("bank", "account.id_bank", "bank.id_bank")
+                .filter("account.id_account = ?")
+                .build();
+
+        Account accountDao = new AccountDao().read(1, sql);
         System.out.println(accountDao.displayAccount());
     }
 
