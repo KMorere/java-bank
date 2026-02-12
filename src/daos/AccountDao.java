@@ -2,14 +2,17 @@ package daos;
 
 import utils.DatabaseConnection;
 import models.*;
+import utils.SqlQuery;
 
 import java.sql.*;
 import java.util.Map;
 
 public class AccountDao extends Dao<Account> {
     @Override
-    public int create(Account obj, String query) {
+    public int create(Account obj) {
         int id_account = 0;
+        String query = "INSERT INTO account (id_bank, account_number, account_balance, bank_fk) VALUES (NULL, ?, ?, ?)";
+
         try (Connection connection = DatabaseConnection.GetInstance().getConnection();
              PreparedStatement record = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -29,8 +32,16 @@ public class AccountDao extends Dao<Account> {
     }
 
     @Override
-    public Account read(int id, String query) {
+    public Account read(int id) {
         Account account = null;
+        String query = new SqlQuery.Builder()
+                .select("*")
+                .table("account")
+                .join("account_client", "account.id_account", "account_client.id_account")
+                .join("client", "account_client.id_client", "client.id_client")
+                .join("bank", "account.id_bank", "bank.id_bank")
+                .filter("account.id_account = ?")
+                .build();
 
         try (Connection connection = DatabaseConnection.GetInstance().getConnection();
              PreparedStatement record = connection.prepareStatement(query)) {

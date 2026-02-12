@@ -31,6 +31,12 @@ public final class DatabaseConnection {
     }
 
     public Connection getConnection() {
+        try {
+            if (this.connection == null || this.connection.isClosed())
+                this.connection = connection();
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return this.connection;
     }
 }

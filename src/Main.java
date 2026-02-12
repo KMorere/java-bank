@@ -1,4 +1,5 @@
 import custom.*;
+import daos.OperationDao;
 import models.*;
 import daos.AccountDao;
 import utils.AccountNumber;
@@ -8,19 +9,11 @@ import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) {
-        String sql = new SqlQuery.Builder()
-                .select("*")
-                .table("account")
-                .join("account_client", "account.id_account", "account_client.id_account")
-                .join("client", "account_client.id_client", "client.id_client")
-                .join("bank", "account.id_bank", "bank.id_bank")
-                .filter("account.id_account = ?")
-                .build();
-
-        Account accountDao = new AccountDao().read(1, sql);
+        Account accountDao = new AccountDao().read(1);
         System.out.println(accountDao.displayAccount());
 
-        Account newAccount = new AccountFactory().createAccount(AccountType.CHECKING, 1000);
+        Operation operation = new OperationDao().read(1);
+        System.out.println(operation.toString());
     }
 
     private static void test_init() {

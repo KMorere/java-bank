@@ -8,14 +8,14 @@ public abstract class Dao<T> {
      * @param obj Entity to create and use in the database.
      * @return The ID of the entity in the table.
      */
-    public abstract int create(T obj, String query);
+    public abstract int create(T obj);
 
     /**
      * Read the entity matching the id.
      * @param id ID of the entity.
      * @return The object matching the id.
      */
-    public abstract T read(int id, String query);
+    public abstract T read(int id);
 
     /**
      * Read all the entities of a table.

@@ -2,19 +2,27 @@ package daos;
 
 import utils.DatabaseConnection;
 import models.*;
+import utils.SqlQuery;
 
 import java.sql.*;
 import java.util.Map;
 
 public class OperationDao extends Dao<Operation> {
     @Override
-    public int create(Operation obj, String query) {
+    public int create(Operation obj) {
         return 0;
     }
 
     @Override
-    public Operation read(int id, String query) {
+    public Operation read(int id) {
         Operation operation = null;
+
+        String query = new SqlQuery.Builder()
+                .select("*")
+                .table("operation")
+                .join("account", "operation.id_account", "account.id_account")
+                .filter("operation.id_operation = ?")
+                .build();
 
         try (Connection connection = DatabaseConnection.GetInstance().getConnection();
              PreparedStatement record = connection.prepareStatement(query)) {
@@ -24,7 +32,7 @@ public class OperationDao extends Dao<Operation> {
                 if (set.next()) {
                     operation = new Operation(
                             set.getInt("id_operation"),
-                            set.getString("id_account"),
+                            new AccountDao().read(set.getInt("id_account")).getAccountNumber(),
                             set.getString("operation_type"),
                             set.getFloat("operation_amount"),
                             set.getString("operation_date")
