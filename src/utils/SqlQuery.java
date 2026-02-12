@@ -1,4 +1,4 @@
-package database;
+package utils;
 
 public class SqlQuery {
     private String selection = "*"; // Par défaut, on prend tout
