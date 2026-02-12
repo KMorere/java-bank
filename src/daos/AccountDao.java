@@ -1,7 +1,6 @@
 package daos;
 
-import com.sun.security.ntlm.Client;
-import database.DatabaseConnection;
+import utils.DatabaseConnection;
 import models.*;
 
 import java.sql.*;

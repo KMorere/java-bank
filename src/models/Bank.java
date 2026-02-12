@@ -1,16 +1,13 @@
 package models;
 
 import custom.*;
-import java.util.Random;
+import utils.AccountNumber;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Bank {
     private String name;
-
-    private static final String ACCOUNT_NUMBER_FORMAT = "FR-XXXX-XXXX";
-    private static final Random rnd = new Random();
-    private static final String REGEX = "[A-Z]{2}-\\d{4}-\\d{4}";
 
     public Bank(String _name) {
         this.setName(_name);
@@ -27,30 +24,13 @@ public class Bank {
      */
     public String createAccount(Person _person) throws AccountAlreadyExistsException {
         if (_person.getAccount() == null) { // TODO: Change the exception condition to the accountNumber.
-            _person.createAccount(generateAccountNumber());
+            _person.createAccount(AccountNumber.GetInstance().generateAccountNumber());
         }
         else {
             throw new AccountAlreadyExistsException("An account already exists for " + _person.getFullName() + ".");
         }
 
-        return generateAccountNumber();
-    }
-
-    /**
-     * Generate a new account number using 'accountNumberFormat'.
-     * @return Returns the generated account number.
-     */
-    public String generateAccountNumber() { // TODO: Save associated numbers so they are unique.
-        StringBuilder newNumber = new StringBuilder(ACCOUNT_NUMBER_FORMAT);
-
-        for (int i = 0; i < ACCOUNT_NUMBER_FORMAT.length(); i++) {
-            if (newNumber.charAt(i) == 'X') {
-                int rndInt = rnd.nextInt(10);
-                newNumber.setCharAt(i, Character.forDigit(rndInt, 10));
-            }
-        }
-
-        return newNumber.toString();
+        return AccountNumber.GetInstance().generateAccountNumber();
     }
 
     /**
@@ -59,7 +39,7 @@ public class Bank {
      * @return Returns the account.
      */
     public static String getAccount(String _accountNumber) {
-        Pattern pattern = Pattern.compile(REGEX);
+        Pattern pattern = Pattern.compile(AccountNumber.REGEX);
         Matcher matcher = pattern.matcher(_accountNumber);
 
         if (matcher.find()) {

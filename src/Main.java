@@ -3,7 +3,8 @@ import models.Account;
 import models.Bank;
 import models.Person;
 import daos.AccountDao;
-import database.SqlQuery;
+import utils.AccountNumber;
+import utils.SqlQuery;
 
 import java.util.logging.Logger;
 
@@ -47,7 +48,7 @@ public class Main {
 
             System.out.println(acc1 + "\n" + acc2);
 
-            System.out.println(newBank.generateAccountNumber());
+            System.out.println(AccountNumber.GetInstance().generateAccountNumber());
         } catch (AccountAlreadyExistsException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

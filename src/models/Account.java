@@ -1,6 +1,8 @@
 package models;
 
 import custom.*;
+import utils.AccountNumber;
+
 import java.util.logging.Logger;
 
 /**
@@ -13,7 +15,7 @@ public class Account {
     private Person holder;
     private Bank bank;
     private int id_bank;
-    private AccountType accountType;
+    private String accountType;
 
     private static final Logger logger = CustomLogger.getInstance(Logger.getLogger(Account.class.getName())).logger;
 
@@ -29,9 +31,8 @@ public class Account {
         this.setHolder(_holder);
     }
 
-    public Account(int _id, String _number, float _balance) {
-        this.id = _id;
-        this.accountNumber = _number;
+    public Account(float _balance) {
+        this.accountNumber = AccountNumber.GetInstance().generateAccountNumber();
         this.balance = _balance;
     }
 
@@ -51,8 +52,8 @@ public class Account {
     public int getBankID() { return this.id_bank; }
     public void setBank(Bank _bank) {this.bank = _bank; }
 
-    public AccountType getAccountType() { return this.accountType; }
-    public void setAccountType(AccountType _type) { this.accountType = _type; }
+    public String getAccountType() { return this.accountType; }
+    public void setAccountType(String _type) { this.accountType = _type; }
 //endregion
 
     /**
