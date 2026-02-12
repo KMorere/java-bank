@@ -5,6 +5,7 @@ import models.*;
 import utils.SqlQuery;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class AccountDao extends Dao<Account> {
@@ -91,7 +92,97 @@ public class AccountDao extends Dao<Account> {
 
     @Override
     public Account[] readAll() {
-        return new Account[0];
+        ArrayList<Account> accounts = new ArrayList<>();
+        String query = new SqlQuery.Builder()
+                .select("*")
+                .table("account")
+                .join("account_client", "account.id_account", "account_client.id_account")
+                .join("client", "account_client.id_client", "client.id_client")
+                .join("bank", "account.id_bank", "bank.id_bank")
+                .build(SqlQuery.QueryType.SELECT);
+
+        try (Connection connection = DatabaseConnection.GetInstance().getConnection();
+             PreparedStatement record = connection.prepareStatement(query)) {
+
+            try (ResultSet set = record.executeQuery()) {
+                while (set.next()) {
+                    Account account = null;
+                    account = new AccountFactory().createAccount(
+                            AccountType.fromLabel(set.getString("account_type")),
+                            0,
+                            set.getInt("id_bank")
+                    );
+                    account.setAccountID(set.getInt("id_account"));
+                    account.setAccountNumber(set.getString("account_number"));
+                    account.setAccountBalance(set.getFloat("account_balance"));
+
+                    if (set.getInt("id_client") > 0) {
+                        account.setHolder(new Person(
+                                set.getString("first_name"),
+                                set.getString("last_Name")
+                        ));
+                    }
+
+                    if (set.getInt("id_bank") > 0) {
+                        account.setBank(new Bank(
+                                set.getString("bank_name")
+                        ));
+                    }
+
+                    accounts.add(account);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return accounts.toArray(new Account[0]);
+    }
+
+    public String getAccountNumber(int _id) {
+        String accountNumber = "";
+        String query = new SqlQuery.Builder()
+                .select("account.account_number")
+                .table("account")
+                .filter("account.id_account = ?")
+                .build(SqlQuery.QueryType.SELECT);
+
+        try (Connection connection = DatabaseConnection.GetInstance().getConnection();
+             PreparedStatement record = connection.prepareStatement(query)) {
+            record.setInt(1, _id);
+
+            try (ResultSet set = record.executeQuery()) {
+                if (set.next()) {
+                    accountNumber = set.getString("account_number");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return accountNumber;
+    }
+
+    public String[] getAccountNumbers() {
+        ArrayList<String> accountNumbers = new ArrayList<>();
+        String query = new SqlQuery.Builder()
+                .select("account.account_number")
+                .table("account")
+                .build(SqlQuery.QueryType.SELECT);
+
+        try (Connection connection = DatabaseConnection.GetInstance().getConnection();
+             PreparedStatement record = connection.prepareStatement(query)) {
+
+            try (ResultSet set = record.executeQuery()) {
+                while (set.next()) {
+                    accountNumbers.add(set.getString("account_number"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return accountNumbers.toArray(new String[0]);
     }
 
     @Override

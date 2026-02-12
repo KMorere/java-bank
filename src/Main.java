@@ -5,6 +5,7 @@ import daos.AccountDao;
 import utils.AccountNumber;
 import utils.SqlQuery;
 
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class Main {
@@ -15,8 +16,8 @@ public class Main {
         Operation operation = new OperationDao().read(1);
         System.out.println(operation.toString());
 
-        new AccountDao().create(
-                new AccountFactory().createAccount(AccountType.SAVING, 500, 1));
+        System.out.println(Arrays.asList(
+                new AccountDao().getAccountNumbers()).contains("FR-1234-5678"));
     }
 
     private static void test_init() {
