@@ -22,9 +22,13 @@ public class Bank {
      * @return Returns the account's number.
      * @throws AccountAlreadyExistsException Throws an exception if an account exists for this user or number.
      */
-    public String createAccount(Person _person) throws AccountAlreadyExistsException {
+    public String createAccount(Person _person, AccountType _type) throws AccountAlreadyExistsException {
         if (_person.getAccount() == null) { // TODO: Change the exception condition to the accountNumber.
-            _person.createAccount(AccountNumber.GetInstance().generateAccountNumber());
+            Account newAccount = new AccountFactory().createAccount(_type, 0);
+            newAccount.setAccountNumber(AccountNumber.GetInstance().generateAccountNumber());
+            newAccount.setHolder(_person);
+            newAccount.setBank(this);
+            _person.setAccount(newAccount);
         }
         else {
             throw new AccountAlreadyExistsException("An account already exists for " + _person.getFullName() + ".");
