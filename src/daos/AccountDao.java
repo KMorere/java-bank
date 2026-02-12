@@ -38,12 +38,13 @@ public class AccountDao extends Dao<Account> {
 
             try (ResultSet set = record.executeQuery()) {
                 if (set.next()) {
-                    account = new Account(
-                            set.getInt("id_account"),
-                            set.getString("account_number"),
-                            set.getFloat("account_balance"),
-                            set.getInt("id_bank")
+                    account = new AccountFactory().createAccount(
+                        AccountType.fromLabel(set.getString("account_type")), 0
                     );
+                    account.setAccountID(set.getInt("id_account"));
+                    account.setAccountNumber(set.getString("account_number"));
+                    account.setAccountBalance(set.getFloat("account_balance"));
+                    account.setBankID(set.getInt("id_bank"));
 
                     if (set.getInt("id_client") > 0) {
                         account.setHolder(new Person(

@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 /**
  * The account of a models.Person with a unique number and a balance.
  */
-public class Account {
+public abstract class Account {
     private int id;
     private String accountNumber; // models.Account number in 'FR-XXXX-XXXX' format.
     private float balance;
@@ -38,12 +38,13 @@ public class Account {
 
 //region Get & Set
     public int getAccountID() { return this.id; }
+    public void setAccountID(int _id) { this.id = _id; }
 
     public String getAccountNumber() { return this.accountNumber; }
     public void setAccountNumber(String _number) { this.accountNumber = _number; }
 
     public float getAccountBalance() { return this.balance; }
-    private void setAccountBalance(float _amount) { this.balance += _amount; }
+    public void setAccountBalance(float _amount) { this.balance = _amount; }
 
     public Person getHolder() { return this.holder; }
     public void setHolder(Person _holder) { this.holder = _holder; }
@@ -51,10 +52,13 @@ public class Account {
     public Bank getBank() { return this.bank; }
     public int getBankID() { return this.id_bank; }
     public void setBank(Bank _bank) {this.bank = _bank; }
+    public void setBankID(int _id) {this.id_bank = _id; }
 
     public AccountType getAccountType() { return this.accountType; }
     public void setAccountType(AccountType _type) { this.accountType = _type; }
 //endregion
+
+    private void updateAccountBalance(float _amount) { this.balance += _amount; }
 
     /**
      * Transfer '_amount' from this account to another.
@@ -75,8 +79,8 @@ public class Account {
         float startbalance = this.getAccountBalance();
         float destbalance = _account.getAccountBalance();
 
-        _account.setAccountBalance(_amount);
-        this.setAccountBalance(-_amount);
+        _account.updateAccountBalance(_amount);
+        this.updateAccountBalance(-_amount);
 
         String msg = String.format("Successfully transfered %s to %s.", _amount, _account.getHolder());
         logger.info(msg);
@@ -93,7 +97,7 @@ public class Account {
     public boolean depositMoney(float _amount) {
         if (_amount < 0)
             throw new RuntimeException("The amount to transfer must be positive !");
-        this.setAccountBalance(_amount);
+        this.updateAccountBalance(_amount);
 
         String msg = String.format("Successfully deposited %s to the account.", _amount);
         logger.info(msg);
@@ -112,7 +116,7 @@ public class Account {
             throw new RuntimeException("The amount to transfer must be positive !");
         if (this.balance < _amount)
             throw new InsufficientBalanceException();
-        this.setAccountBalance(-_amount);
+        this.updateAccountBalance(-_amount);
 
         String msg = String.format("Successfully took out %s from the account.", _amount);
         logger.info(msg);
