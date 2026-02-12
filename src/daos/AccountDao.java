@@ -21,8 +21,6 @@ public class AccountDao extends Dao<Account> {
         try (Connection connection = DatabaseConnection.GetInstance().getConnection();
              PreparedStatement record = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            System.out.println(obj.getAccountType().getLabel() + " " + record);
-
             record.setString(1, obj.getAccountType().getLabel());
             record.setString(2, obj.getAccountNumber());
             record.setFloat(3, obj.getAccountBalance());
