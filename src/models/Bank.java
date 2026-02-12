@@ -26,9 +26,10 @@ public class Bank {
      * @throws AccountAlreadyExistsException Throws an exception if an account exists for this user or number.
      */
     public String createAccount(Person _person, AccountType _type) throws AccountAlreadyExistsException {
-        if (_person.getAccount() == null) { // TODO: Change the exception condition to the accountNumber.
+        String newNumber = AccountNumber.GetInstance().generateAccountNumber();
+        if (!AccountNumber.GetInstance().isAccountNumberTaken(newNumber)) {
             Account newAccount = new AccountFactory().createAccount(_type, 0, this.getID());
-            newAccount.setAccountNumber(AccountNumber.GetInstance().generateAccountNumber());
+            newAccount.setAccountNumber(newNumber);
             newAccount.setHolder(_person);
             newAccount.setBank(this);
             _person.setAccount(newAccount);
@@ -37,7 +38,7 @@ public class Bank {
             throw new AccountAlreadyExistsException("An account already exists for " + _person.getFullName() + ".");
         }
 
-        return AccountNumber.GetInstance().generateAccountNumber();
+        return newNumber;
     }
 
     /**

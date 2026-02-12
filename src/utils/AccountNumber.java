@@ -1,5 +1,8 @@
 package utils;
 
+import daos.AccountDao;
+
+import java.util.Arrays;
 import java.util.Random;
 
 public final class AccountNumber {
@@ -28,6 +31,13 @@ public final class AccountNumber {
             }
         }
 
+        if (isAccountNumberTaken(newNumber.toString()))
+            return generateAccountNumber();
+
         return newNumber.toString();
+    }
+
+    public boolean isAccountNumberTaken(String _number) {
+        return Arrays.asList(new AccountDao().getAccountNumbers()).contains(_number);
     }
 }
