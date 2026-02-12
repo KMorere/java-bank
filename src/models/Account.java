@@ -3,6 +3,7 @@ package models;
 import custom.*;
 import utils.AccountNumber;
 
+import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 /**
@@ -86,8 +87,17 @@ public abstract class Account {
         String msg = String.format("Successfully transfered %s to %s.", _amount, _account.getHolder());
         logger.info(msg);
 
-        return (this.getAccountBalance() == startbalance - _amount &&
-                _account.getAccountBalance() == destbalance + _amount);
+        if (this.getAccountBalance() == startbalance - _amount &&
+                _account.getAccountBalance() == destbalance + _amount) {
+            Operation op = new Operation(
+                    0, ""+this.getAccountID(), "TRANSFER", _amount, LocalDateTime.now().toString()
+            );
+
+            System.out.println(op);
+
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -102,6 +112,12 @@ public abstract class Account {
 
         String msg = String.format("Successfully deposited %s to the account.", _amount);
         logger.info(msg);
+
+        Operation op = new Operation(
+                0, ""+this.getAccountID(), "DEPOSIT", _amount, LocalDateTime.now().toString()
+        );
+
+        System.out.println(op);
 
         return true;
     }
@@ -121,6 +137,12 @@ public abstract class Account {
 
         String msg = String.format("Successfully took out %s from the account.", _amount);
         logger.info(msg);
+
+        Operation op = new Operation(
+                0, ""+this.getAccountID(), "WITHDRAW", _amount, LocalDateTime.now().toString()
+        );
+
+        System.out.println(op);
 
         return true;
     }

@@ -1,23 +1,31 @@
 import custom.*;
-import daos.OperationDao;
 import models.*;
 import daos.AccountDao;
 import utils.AccountNumber;
-import utils.SqlQuery;
 
-import java.util.Arrays;
 import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) {
-        Account accountDao = new AccountDao().read(1);
-        System.out.println(accountDao.displayAccount());
+        operation_test();
+    }
 
-        Operation operation = new OperationDao().read(1);
-        System.out.println(operation.toString());
+    private static void operation_test() {
+        Account acc1 = new AccountDao().read(1);
+        Account acc2 = new AccountDao().read(2);
 
-        System.out.println(Arrays.asList(
-                new AccountDao().getAccountNumbers()).contains("FR-1234-5678"));
+        try {
+            acc1.depositMoney(150);
+            System.out.println(acc1 + "" + acc2);
+
+            acc2.withdrawMoney(273);
+            System.out.println(acc1 + "" + acc2);
+
+            acc1.transferMoney(acc2, 150);
+            System.out.println(acc1 + "" + acc2);
+        } catch (InsufficientBalanceException | AccountDoesNotExistException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void test_init() {
