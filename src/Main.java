@@ -14,18 +14,8 @@ public class Main {
         Account acc1 = new AccountDao().read(1);
         Account acc2 = new AccountDao().read(2);
 
-        try {
-            acc1.depositMoney(150);
-            System.out.println(acc1 + "" + acc2);
-
-            acc2.withdrawMoney(273);
-            System.out.println(acc1 + "" + acc2);
-
-            acc1.transferMoney(acc2, 150);
-            System.out.println(acc1 + "" + acc2);
-        } catch (InsufficientBalanceException | AccountDoesNotExistException e) {
-            e.printStackTrace();
-        }
+        acc1.depositMoney(150);
+        System.out.println(acc1 + "" + acc2);
     }
 
     private static void test_init() {

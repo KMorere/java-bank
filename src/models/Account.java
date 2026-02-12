@@ -90,7 +90,7 @@ public abstract class Account {
         if (this.getAccountBalance() == startbalance - _amount &&
                 _account.getAccountBalance() == destbalance + _amount) {
             Operation op = new Operation(
-                    0, ""+this.getAccountID(), "TRANSFER", _amount, LocalDateTime.now().toString()
+                    0, this.getAccountID(), "TRANSFER", _amount, LocalDateTime.now().toString()
             );
 
             System.out.println(op);
@@ -114,7 +114,7 @@ public abstract class Account {
         logger.info(msg);
 
         Operation op = new Operation(
-                0, ""+this.getAccountID(), "DEPOSIT", _amount, LocalDateTime.now().toString()
+                0, this.getAccountID(), "DEPOSIT", _amount, LocalDateTime.now().toString()
         );
 
         System.out.println(op);
@@ -139,7 +139,7 @@ public abstract class Account {
         logger.info(msg);
 
         Operation op = new Operation(
-                0, ""+this.getAccountID(), "WITHDRAW", _amount, LocalDateTime.now().toString()
+                0, this.getAccountID(), "WITHDRAW", _amount, LocalDateTime.now().toString()
         );
 
         System.out.println(op);
