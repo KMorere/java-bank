@@ -34,8 +34,8 @@ public class Main {
 
         logger.info("Creating models.Account for person 1 and 2.");
         try {
-            newBank.createAccount(npc1);
-            newBank.createAccount(npc2);
+            newBank.createAccount(npc1, AccountType.CHECKING);
+            newBank.createAccount(npc2, AccountType.CHECKING);
 
             Account acc1 = npc1.getAccount();
             Account acc2 = npc2.getAccount();
