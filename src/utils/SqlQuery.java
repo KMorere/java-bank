@@ -1,11 +1,17 @@
 package utils;
 
+import custom.InvalidQueryException;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class SqlQuery {
     private String selection = "*"; // Par défaut, on prend tout
     private String table;
     private String condition = "";
     private String join = "";
     private String sort = "";
+    private String insert = "";
 
     public static class Builder {
         private final SqlQuery query = new SqlQuery();
@@ -35,9 +41,29 @@ public class SqlQuery {
             return this;
         }
 
-        public String build() {
-            return "SELECT " + query.selection + " FROM " + query.table + query.join + query.condition + query.sort + ";";
+        public Builder insert(String[] fields, String[] values) {
+            query.insert = "(" +
+                    Arrays.stream(fields).map(String::valueOf).collect(Collectors.joining(", ")) + ")"
+                    + " VALUES " + "(" +
+                    Arrays.stream(values).map(String::valueOf).collect(Collectors.joining(", ")) + ")";
+            return this;
+        }
+
+        public String build(QueryType type) {
+            switch (type) {
+                case SELECT:
+                    return "SELECT " + query.selection + " FROM " +
+                            query.table + query.join + query.condition + query.sort + ";";
+                case INSERT:
+                    return "INSERT INTO " + query.table + query.insert + ";";
+                default:
+                    throw new InvalidQueryException("Invalid query type : " + type);
+            }
         }
     }
 
+    public enum QueryType {
+        SELECT,
+        INSERT
+    }
 }
