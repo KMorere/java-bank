@@ -1,7 +1,5 @@
 import custom.*;
-import models.Account;
-import models.Bank;
-import models.Person;
+import models.*;
 import daos.AccountDao;
 import utils.AccountNumber;
 import utils.SqlQuery;
@@ -21,6 +19,8 @@ public class Main {
 
         Account accountDao = new AccountDao().read(1, sql);
         System.out.println(accountDao.displayAccount());
+
+        Account newAccount = new AccountFactory().createAccount(AccountType.CHECKING, 1000);
     }
 
     private static void test_init() {
