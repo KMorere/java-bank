@@ -183,6 +183,23 @@ public class AccountDao extends Dao<Account> {
         return accountNumbers.toArray(new String[0]);
     }
 
+    public boolean updateBalance(int _id, float _amount) {
+        String query = "UPDATE account SET account.account_balance = ? WHERE account.id_account = ?";
+
+        try (Connection connection = DatabaseConnection.GetInstance().getConnection();
+             PreparedStatement record = connection.prepareStatement(query)) {
+
+            record.setFloat(1, _amount);
+            record.setInt(2, _id);
+
+            record.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+    }
+
     @Override
     public boolean update(Account obj, Map<String, Object> key) {
         return false;

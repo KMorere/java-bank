@@ -1,5 +1,6 @@
 package models;
 
+import daos.AccountDao;
 import daos.OperationDao;
 
 public class Operation {
@@ -18,6 +19,9 @@ public class Operation {
         this.date = _date;
 
         new OperationDao().create(this);
+        Account acc = new AccountDao().read(_id_account);
+
+        new AccountDao().updateBalance(_id_account, (acc.getAccountBalance()+_amount));
     }
 
     public int getAccountID() { return this.accountID; }

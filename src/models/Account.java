@@ -60,7 +60,7 @@ public abstract class Account {
     public void setAccountType(AccountType _type) { this.accountType = _type; }
 //endregion
 
-    private void updateAccountBalance(float _amount) { this.balance += _amount; }
+    public void updateAccountBalance(float _amount) { this.balance += _amount; }
 
     /**
      * Transfer '_amount' from this account to another.
@@ -89,11 +89,11 @@ public abstract class Account {
 
         if (this.getAccountBalance() == startbalance - _amount &&
                 _account.getAccountBalance() == destbalance + _amount) {
-            Operation op = new Operation(
+            /*Operation op = new Operation(
                     0, this.getAccountID(), "TRANSFER", _amount, LocalDateTime.now().toString()
             );
 
-            System.out.println(op);
+            System.out.println(op);*/
 
             return true;
         }
@@ -139,7 +139,7 @@ public abstract class Account {
         logger.info(msg);
 
         Operation op = new Operation(
-                0, this.getAccountID(), "WITHDRAW", _amount, LocalDateTime.now().toString()
+                0, this.getAccountID(), "WITHDRAW", -_amount, LocalDateTime.now().toString()
         );
 
         System.out.println(op);
