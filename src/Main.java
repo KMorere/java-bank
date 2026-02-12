@@ -14,6 +14,9 @@ public class Main {
 
         Operation operation = new OperationDao().read(1);
         System.out.println(operation.toString());
+
+        new AccountDao().create(
+                new AccountFactory().createAccount(AccountType.SAVING, 500, 1));
     }
 
     private static void test_init() {

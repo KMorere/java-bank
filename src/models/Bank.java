@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 public class Bank {
     private String name;
+    private int id;
 
     public Bank(String _name) {
         this.setName(_name);
@@ -15,6 +16,8 @@ public class Bank {
 
     public String getName() { return this.name; }
     public void setName(String _name) { this.name = _name; }
+
+    public int getID() { return this.id; }
 
     /**
      * Create an account for '_person' with an account number.
@@ -24,7 +27,7 @@ public class Bank {
      */
     public String createAccount(Person _person, AccountType _type) throws AccountAlreadyExistsException {
         if (_person.getAccount() == null) { // TODO: Change the exception condition to the accountNumber.
-            Account newAccount = new AccountFactory().createAccount(_type, 0);
+            Account newAccount = new AccountFactory().createAccount(_type, 0, this.getID());
             newAccount.setAccountNumber(AccountNumber.GetInstance().generateAccountNumber());
             newAccount.setHolder(_person);
             newAccount.setBank(this);

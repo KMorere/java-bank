@@ -31,9 +31,10 @@ public abstract class Account {
         this.setHolder(_holder);
     }
 
-    public Account(float _balance) {
+    public Account(float _balance, int _id_bank) {
         this.accountNumber = AccountNumber.GetInstance().generateAccountNumber();
         this.balance = _balance;
+        this.id_bank = _id_bank;
     }
 
 //region Get & Set

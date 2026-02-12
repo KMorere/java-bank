@@ -22,7 +22,7 @@ public class OperationDao extends Dao<Operation> {
                 .table("operation")
                 .join("account", "operation.id_account", "account.id_account")
                 .filter("operation.id_operation = ?")
-                .build();
+                .build(SqlQuery.QueryType.SELECT);
 
         try (Connection connection = DatabaseConnection.GetInstance().getConnection();
              PreparedStatement record = connection.prepareStatement(query)) {

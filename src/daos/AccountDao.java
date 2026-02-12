@@ -11,18 +11,28 @@ public class AccountDao extends Dao<Account> {
     @Override
     public int create(Account obj) {
         int id_account = 0;
-        String query = "INSERT INTO account (id_bank, account_number, account_balance, bank_fk) VALUES (NULL, ?, ?, ?)";
+        String query = new SqlQuery.Builder()
+                .table("account")
+                .insert(new String[] {"id_account", "account_type", "account_number", "account_balance", "id_bank"},
+                        new String[] {"NULL", "?", "?", "?", "?"})
+                .build(SqlQuery.QueryType.INSERT);
 
         try (Connection connection = DatabaseConnection.GetInstance().getConnection();
              PreparedStatement record = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-            record.setString(1, obj.getAccountNumber());
-            record.setFloat(2, obj.getAccountBalance());
-            record.setInt(3, obj.getBankID());
+            System.out.println(obj.getAccountType().getLabel() + " " + record);
 
-            id_account = record.executeUpdate();
+            record.setString(1, obj.getAccountType().getLabel());
+            record.setString(2, obj.getAccountNumber());
+            record.setFloat(3, obj.getAccountBalance());
+            record.setInt(4, obj.getBankID());
 
-            if (id_account > 0)
+            try (ResultSet set = record.getGeneratedKeys()) {
+                if (set.next())
+                    id_account = set.getInt(1);
+            }
+
+            if (record.executeUpdate() > 0)
                 System.out.println("Insertion at id : " + id_account);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,7 +51,7 @@ public class AccountDao extends Dao<Account> {
                 .join("client", "account_client.id_client", "client.id_client")
                 .join("bank", "account.id_bank", "bank.id_bank")
                 .filter("account.id_account = ?")
-                .build();
+                .build(SqlQuery.QueryType.SELECT);
 
         try (Connection connection = DatabaseConnection.GetInstance().getConnection();
              PreparedStatement record = connection.prepareStatement(query)) {
@@ -50,12 +60,13 @@ public class AccountDao extends Dao<Account> {
             try (ResultSet set = record.executeQuery()) {
                 if (set.next()) {
                     account = new AccountFactory().createAccount(
-                        AccountType.fromLabel(set.getString("account_type")), 0
+                        AccountType.fromLabel(set.getString("account_type")),
+                            0,
+                            set.getInt("id_bank")
                     );
                     account.setAccountID(set.getInt("id_account"));
                     account.setAccountNumber(set.getString("account_number"));
                     account.setAccountBalance(set.getFloat("account_balance"));
-                    account.setBankID(set.getInt("id_bank"));
 
                     if (set.getInt("id_client") > 0) {
                         account.setHolder(new Person(
