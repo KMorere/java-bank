@@ -3,8 +3,8 @@ package models;
 import custom.InvalidAccountTypeException;
 
 public enum AccountType {
-    CHECKING("Checking"),
-    SAVING("Saving");
+    CHECKING("CHECKING"),
+    SAVING("SAVING");
 
     private final String label;
 
