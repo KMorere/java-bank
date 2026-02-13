@@ -4,14 +4,75 @@ import models.*;
 import daos.AccountDao;
 import utils.AccountNumber;
 
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class Main {
+    private static final Scanner scan = new Scanner(System.in);
+
     public static void main(String[] args) {
         //operation_test();
 
-        Client newClient = new ClientDao().read(1);
-        System.out.println(newClient + " | " + newClient.getAccount());
+        displayOptions();
+    }
+
+    private static void displayOptions() {
+        System.out.println("=====[Welcome]=====");
+        System.out.println("Select an operation :"+
+                "\n\t 0. Display clients."+
+                "\n\t 1. Display accounts of a client."+
+                "\n\t 2. Deposit money."+
+                "\n\t 3. Withdraw money.");
+
+        switch (scan.nextInt()) {
+            case 0:
+                for(Client client : new ClientDao().readAll()) {
+                    System.out.println("\t" + client + " | " + client.getAccount());
+                }
+                break;
+            case 1:
+                displayAccount();
+                break;
+            case 2:
+                startOperation("DEPOSIT");
+                break;
+            case 3:
+                startOperation("WITHDRAW");
+                break;
+            default:
+                displayOptions();
+                break;
+        }
+    }
+
+    private static void displayAccount() {
+        System.out.println("Select an account ID :");
+
+        if (scan.hasNextInt()) {
+            System.out.println(new ClientDao().read(scan.nextInt()).getAccount());
+        }
+    }
+
+    private static void startOperation(String _type) {
+        System.out.println("Select an account :");
+        if (scan.hasNextInt()) {
+            Account account = new AccountDao().read(scan.nextInt());
+            System.out.println("Select an amount :");
+
+            if (scan.hasNextInt()) {
+                if (_type.equalsIgnoreCase("DEPOSIT")) {
+                    account.depositMoney(scan.nextInt());
+                }
+                else if (_type.equalsIgnoreCase("WITHDRAW")) {
+                    try {
+                        account.withdrawMoney(scan.nextInt());
+                    } catch (InsufficientBalanceException e) {
+                        e.printStackTrace();
+                    }
+                }
+                System.out.println(account);
+            }
+        }
     }
 
     private static void operation_test() {
@@ -20,43 +81,5 @@ public class Main {
 
         acc1.depositMoney(150);
         System.out.println(acc1 + "" + acc2);
-    }
-
-    private static void test_init() {
-        Logger logger = CustomLogger.getInstance(Logger.getLogger(Main.class.getName())).logger;
-
-        Bank newBank = new Bank("Banque impopulaire");
-
-        logger.info("Creating models.Person 1 and 2...");
-        Client npc1 = new Client("Jackie", "Chène");
-        Client npc2 = new Client("Jacques", "Ièsse");
-
-        logger.info("Creating models.Account for person 1 and 2.");
-        try {
-            newBank.createAccount(npc1, AccountType.CHECKING);
-            newBank.createAccount(npc2, AccountType.CHECKING);
-
-            Account acc1 = npc1.getAccount();
-            Account acc2 = npc2.getAccount();
-
-            System.out.println(acc1 + "\n" + acc2);
-
-            acc1.depositMoney(250);
-            acc1.transferMoney(acc2, 100);
-            acc2.withdrawMoney(50);
-
-            System.out.println(acc1 + "\n" + acc2);
-
-            System.out.println(AccountNumber.GetInstance().generateAccountNumber());
-        } catch (AccountAlreadyExistsException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        } catch (InsufficientBalanceException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        } catch (AccountDoesNotExistException e) {
-            e.printStackTrace();
-            throw new RuntimeException("The account does not exist ! " + e.getMessage());
-        }
     }
 }

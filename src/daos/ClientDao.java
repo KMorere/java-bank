@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class ClientDao extends Dao<Client> {
@@ -46,7 +47,31 @@ public class ClientDao extends Dao<Client> {
 
     @Override
     public Client[] readAll() {
-        return new Client[0];
+        ArrayList<Client> clients = new ArrayList<>();
+        String query = new SqlQuery.Builder()
+                .select("*")
+                .table("client")
+                .join("account_client", "client.id_client", "account_client.id_client")
+                .build(SqlQuery.QueryType.SELECT);
+
+        try(Connection connection = DatabaseConnection.GetInstance().getConnection();
+            PreparedStatement record = connection.prepareStatement(query)) {
+
+            try (ResultSet set = record.executeQuery()) {
+                while (set.next()) {
+                    Client client = null;
+                    client = new Client(set.getString("first_name"),
+                            set.getString("last_name"));
+                    client.setAccount(new AccountDao().read(set.getInt("id_account")));
+
+                    clients.add(client);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return clients.toArray(new Client[0]);
     }
 
     @Override
