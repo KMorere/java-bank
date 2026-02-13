@@ -157,7 +157,7 @@ public abstract class Account {
 
     @Override
     public String toString() {
-        return ("models.Account : " + this.getAccountNumber() + " :\n"+
+        return ("Account : " + this.getAccountNumber() + " :\n"+
                 "\t- Holder : " + this.getHolder() + ",\n"+
                 "\t- Balance : " + this.getAccountBalance() + "\n");
     }
