@@ -1,11 +1,11 @@
 package models;
 
-public class Person {
+public class Client {
     private String firstName;
     private String lastName;
     private Account account;
 
-    public Person(String _firstName, String _lastName) {
+    public Client(String _firstName, String _lastName) {
         this.firstName = _firstName;
         this.lastName = _lastName;
     }

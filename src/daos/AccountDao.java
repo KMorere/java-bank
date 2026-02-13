@@ -68,7 +68,7 @@ public class AccountDao extends Dao<Account> {
                     account.setAccountBalance(set.getFloat("account_balance"));
 
                     if (set.getInt("id_client") > 0) {
-                        account.setHolder(new Person(
+                        account.setHolder(new Client(
                                 set.getString("first_name"),
                                 set.getString("last_Name")
                         ));
@@ -115,7 +115,7 @@ public class AccountDao extends Dao<Account> {
                     account.setAccountBalance(set.getFloat("account_balance"));
 
                     if (set.getInt("id_client") > 0) {
-                        account.setHolder(new Person(
+                        account.setHolder(new Client(
                                 set.getString("first_name"),
                                 set.getString("last_Name")
                         ));

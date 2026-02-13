@@ -13,7 +13,7 @@ public abstract class Account {
     private int id;
     private String accountNumber; // models.Account number in 'FR-XXXX-XXXX' format.
     private float balance;
-    private Person holder;
+    private Client holder;
     private Bank bank;
     private int id_bank;
     private AccountType accountType;
@@ -27,7 +27,7 @@ public abstract class Account {
         this.id_bank = _id_bank;
     }
 
-    public Account(String _number, Person _holder) {
+    public Account(String _number, Client _holder) {
         this.setAccountNumber(_number);
         this.setHolder(_holder);
     }
@@ -48,8 +48,8 @@ public abstract class Account {
     public float getAccountBalance() { return this.balance; }
     public void setAccountBalance(float _amount) { this.balance = _amount; }
 
-    public Person getHolder() { return this.holder; }
-    public void setHolder(Person _holder) { this.holder = _holder; }
+    public Client getHolder() { return this.holder; }
+    public void setHolder(Client _holder) { this.holder = _holder; }
 
     public Bank getBank() { return this.bank; }
     public int getBankID() { return this.id_bank; }

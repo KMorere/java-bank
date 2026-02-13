@@ -25,7 +25,7 @@ public class Bank {
      * @return Returns the account's number.
      * @throws AccountAlreadyExistsException Throws an exception if an account exists for this user or number.
      */
-    public String createAccount(Person _person, AccountType _type) throws AccountAlreadyExistsException {
+    public String createAccount(Client _person, AccountType _type) throws AccountAlreadyExistsException {
         String newNumber = AccountNumber.GetInstance().generateAccountNumber();
         if (!AccountNumber.GetInstance().isAccountNumberTaken(newNumber)) {
             Account newAccount = new AccountFactory().createAccount(_type, 0, this.getID());
