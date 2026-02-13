@@ -1,4 +1,5 @@
 import custom.*;
+import daos.ClientDao;
 import models.*;
 import daos.AccountDao;
 import utils.AccountNumber;
@@ -8,6 +9,9 @@ import java.util.logging.Logger;
 public class Main {
     public static void main(String[] args) {
         //operation_test();
+
+        Client newClient = new ClientDao().read(1);
+        System.out.println(newClient + " | " + newClient.getAccount());
     }
 
     private static void operation_test() {
@@ -24,8 +28,8 @@ public class Main {
         Bank newBank = new Bank("Banque impopulaire");
 
         logger.info("Creating models.Person 1 and 2...");
-        Person npc1 = new Person("Jackie", "Chène");
-        Person npc2 = new Person("Jacques", "Ièsse");
+        Client npc1 = new Client("Jackie", "Chène");
+        Client npc2 = new Client("Jacques", "Ièsse");
 
         logger.info("Creating models.Account for person 1 and 2.");
         try {
